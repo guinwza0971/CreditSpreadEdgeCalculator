@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit Spread Calculator</title>
+    <script>
+    function calculate() 
+    {
+    let strikenear = document.getElementById("strikenear").value
+    let strikefar = document.getElementById("strikefar").value
+    let bid = document.getElementById("bidnear").value
+    let ask = document.getElementById("askfar").value
+    let delta = document.getElementById("delta").value
+    let mode 
+
+    const radiolist = document.getElementsByName("spreadtype")
+    radiolist.forEach(element => {
+        if(element.checked == true)
+        {
+            mode = element.value
+        }
+    });
+
+    let profit
+    let loss
+    let longtermwin
+    let longtermloss
+    let longtermedge
+    let breakeven
+    let result
+
+    profit = Math.abs(bid - ask)
+    loss = Math.abs(strikenear - strikefar) - profit
+    breakeven = ( mode == "bull" ? strikenear + profit : strikenear - profit )
+    
+    longtermwin = profit * (1-delta)
+    longtermloss = loss * delta
+
+    longtermedge = longtermwin - longtermloss
+
+    result = (longtermwin > longtermloss ? "Favorable" : "Unfavorable" )
+
+
+    document.getElementById("maxprofit").innerHTML = profit;
+    document.getElementById("maxloss").innerHTML = loss;
+    document.getElementById("beprice").innerHTML = breakeven;
+    document.getElementById("result").innerHTML = result;
+    document.getElementById("edge").innerHTML = longtermedge;
+
+    }
+    </script>
+</head>
+
+<body>
+    <h1>Credit Spread Calculator</h1>
+
+    <div>
+        <label title="Strike price of option to short">Strike of near OTM</label>
+        <input id="strikenear" type="number" value="24000">
+    </div>
+
+    <div>
+        <label title="Strike price of option to long">Strike of far OTM</label>
+        <input id="strikefar" type="number" value="25000">
+    </div>
+
+    <div>
+        <label title="Bid of option to short">Bid price</label>
+        <input id="bidnear" type="number" value="806">
+    </div>
+    
+    <div>
+        <label title="ASK of option to long">ASK price</label>
+        <input id="askfar" type="number"  value="540">
+    </div>
+
+    <div>
+        <label title="Delta of near OTM option">Delta</label>
+        <input id="delta" type="number" value="0.39">
+    </div>
+
+    <div class="item-4">
+        <label>Spread type</label>
+        <span><span><input name="spreadtype" type="radio" value="bear" checked="true">Call (Bearish)</span>
+        <span><input name="spreadtype" type="radio" value="bull">Put (Bullish)</span></span>
+    </div>
+
+    <button type="button" id="button" onclick="calculate()">Calculate</button>
+
+    <div class="outputzone">
+        <p>Max profit: <strong>"<span id="maxprofit">200</span>"</strong> USD per coin.</p>
+        <p>Max loss: <strong>"<span id="maxloss">300</span>"</strong> USD per coin</p>
+        <p>Breakeven price: <strong>"<span id="beprice">25000</span>"</strong> USD per coin</p>
+        <p>Based on delta, this trade is <strong>"<span id="result">N/A</span>"</strong></p>
+        <p>Edge: <strong>"<span id="edge">N/A</span>"</strong></p>
+
+    </div>
+
+
+</body>
+</html>
+
+
+
