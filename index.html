@@ -30,8 +30,16 @@
 
     profit = Math.abs(bid - ask)
     loss = Math.abs(strikenear - strikefar) - profit
-    breakeven = ( mode == "bull" ? strikenear + profit : strikenear - profit )
-    
+            
+    if(mode == "bull")
+    {
+        breakeven = strikenear + profit
+    }
+    if(mode = "bear")
+    {
+        breakeven = strikenear - profit
+    }
+        
     longtermwin = profit * (1-delta)
     longtermloss = loss * delta
 
